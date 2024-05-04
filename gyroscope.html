@@ -2,31 +2,31 @@
 <html>
   <head>
     <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
-  </head>  
+  </head>
   <body>
     <div id="uid" style="display: none"></div>
-    <button type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Start</button> 
-    
+    <button type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Start</button>
+
     <div class="p-3 mb-2 bg-secondary" id="demo-div">
       <audio id="sound" src="metalpipe.mp3"></audio>
-      
+
       <a id="start_demo" class="btn btn-lg btn-success py-1" href="#" role="button">Start the demo</a>
       <p style="margin-top:1rem;">Num. of datapoints: <span class="badge badge-warning" id="num-observed-events">0</span></p>
-      
-      
+
+
       <h4 style="margin-top:0.75rem;">Orientations</h4>
       <ul>
         <li>X-axis (&beta;): <span id="Orientation_b">0</span><span>&deg;</span></li>
         <li>Y-axis (&gamma;): <span id="Orientation_g">0</span><span>&deg;</span></li>
         <li>Z-axis (&alpha;): <span id="Orientation_a">0</span><span>&deg;</span></li>
       </ul>
-      
+
       <h4 style="margin-top:0.75rem;">Tipo</h4>
       <ul>
         <li>Que tipo es? <span id="typee">Ni idea</span></li>
       </ul>
-      
-      
+
+
     </div>
     <script>
       document.getElementById("uid")
@@ -46,28 +46,27 @@
       beta: event.beta,
       gamma: event.gamma
     };
-  
-    // Make a POST request to the endpoint with the orientation data
-    fetch(endpointUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(orientationData)
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      // Handle the response if needed (e.g., log it or update the UI)
-      return response.json();
-    })
-    .then(data => {
-      console.log('Data sent successfully:', data);
-    })
-    .catch(error => {
-      console.error('Error sending data:', error);
-    });
+
+    const button = document.getElementById('startButton');
+
+    if (button) {
+        // Get the current hx-vals attribute value
+        let hxVals = button.getAttribute('hx-vals');
+
+        // Parse the hx-vals JSON string to a JavaScript object
+        let hxValsObject = JSON.parse(hxVals);
+
+        // Update the rotation value
+        hxValsObject.rotation = orientationData;
+
+        // Convert the JavaScript object back to a JSON string
+        const updatedHxVals = JSON.stringify(hxValsObject);
+
+        // Set the updated hx-vals attribute back to the button
+        button.setAttribute('hx-vals', updatedHxVals);
+    }
+
+    document.getElementById("")
 
     updateFieldIfNotNull('Orientation_a', event.alpha);
     updateFieldIfNotNull('Orientation_b', event.beta);
@@ -87,17 +86,9 @@
     if (fieldName == 'typee'){
       if (value != null)
       document.getElementById(fieldName).innerHTML = 20;
-      else 
+      else
       document.getElementById(fieldName).innerHTML = 19;
     }
-  }
-
-  function playSound() {
-      // Get the audio element
-      var audio = document.getElementById('sound');
-      
-      // Play the audio
-      audio.play();
   }
 
   let is_running = false;
@@ -110,7 +101,7 @@
 
   demo_button.onclick = function(e) {
     e.preventDefault();
-    
+
     // Request permission for iOS 13+ devices
     if (
       DeviceMotionEvent &&
@@ -118,7 +109,7 @@
     ) {
       DeviceMotionEvent.requestPermission();
     }
-    playSound();
+
     if (is_running){
       window.removeEventListener("deviceorientation", handleOrientation);
       demo_button.innerHTML = "Start demo";
@@ -133,7 +124,7 @@
       is_running = true;
     }
   };
-      
+
     </script>
   </body>
 </html>
