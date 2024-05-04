@@ -42,7 +42,7 @@
 
         // Update the rotation value
         data.rotation = orientationData
-
+        console.log(data)
         updateFieldIfNotNull('Orientation_a', event.alpha);
         updateFieldIfNotNull('Orientation_b', event.beta);
         updateFieldIfNotNull('Orientation_g', event.gamma);
@@ -67,6 +67,7 @@
             location_longitude: pos.coords.longitude
           }
           data.location = estructura
+          console.log(data)
 
           let headers = new Headers(data);
           // Create a fetch request with custom headers
