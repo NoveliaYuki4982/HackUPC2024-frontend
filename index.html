@@ -28,7 +28,6 @@
             document.getElementById("uid").setAttribute("hx-vals", JSON.stringify(locationData))
             htmx.trigger("#location", "sendGPS", {});
             const crd = pos.coords;
-            console.log(crd)
 
             if (target.latitude === crd.latitude && target.longitude === crd.longitude) {
                 console.log("Congratulations, you reached the target");
