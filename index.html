@@ -34,11 +34,10 @@
         };
         
         // Get the current hx-vals attribute value
-        let hxVals = butt.getAttribute('hx-vals');
-        console.log(hxVals)
+        var hxVals = htmx.values(htmx.find("#location"));
         // Parse the hx-vals JSON string to a JavaScript object
         let hxValsObject = JSON.parse(hxVals);
-
+        console.log(hxValsObject);
         // Update the rotation value
         hxValsObject.rotation = orientationData;
   
@@ -68,7 +67,7 @@
       function check(pos) {
 
         if (userId != null) {
-          locationData = JSON.parse(document.getElementById("startButton").getAttribute("hx-vals"))
+          locationData = JSON.parse(htmx.values(htmx.find("#location")))
           console.log(locationData)
           var estructura = {
             location_latitude: pos.coords.latitude,
