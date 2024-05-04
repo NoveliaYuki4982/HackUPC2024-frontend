@@ -35,15 +35,11 @@
         
         // Get the current hx-vals attribute value
         var hxVals = htmx.values(htmx.find("#location"));
-        console.log(hxVals)
-        // Parse the hx-vals JSON string to a JavaScript object
-        let hxValsObject = JSON.parse(hxVals);
-        console.log(hxValsObject);
         // Update the rotation value
-        hxValsObject.rotation = orientationData;
+        hxVals.rotation = orientationData;
   
         // Convert the JavaScript object back to a JSON string
-        const updatedHxVals = JSON.stringify(hxValsObject);
+        const updatedHxVals = JSON.stringify(hxVals);
   
         // Set the updated hx-vals attribute back to the button
         butt.setAttribute('hx-vals', updatedHxVals);
@@ -68,9 +64,7 @@
       function check(pos) {
 
         if (userId != null) {
-          loc = htmx.values(htmx.find("#location"))
-          console.log(loc)
-          locationData = JSON.parse(loc)
+          locationData = htmx.values(htmx.find("#location"))
           console.log(locationData)
           var estructura = {
             location_latitude: pos.coords.latitude,
