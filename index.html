@@ -66,6 +66,8 @@
             location_latitude: pos.coords.latitude,
             location_longitude: pos.coords.longitude
           }
+
+
           data.location = estructura
           console.log(data)
 
@@ -113,7 +115,30 @@
       };
 
       function startGPS() {
-        id = navigator.geolocation.watchPosition(check, error, options);
+
+        if ("geolocation" in navigator) {
+        // Geolocation is supported
+          setInterval(function() {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              // Success handler
+              console.log("Latitude: " + position.coords.latitude);
+              console.log("Longitude: " + position.coords.longitude);
+              console.log("Accuracy: " + position.coords.accuracy + " meters");
+            }, function(error) {
+              // Error handling
+              console.error("Error occurred: " + error.message);
+            }, {
+              enableHighAccuracy: true, // Request high accuracy
+              timeout: 5000, // Maximum time allowed to try obtaining location
+              maximumAge: 0 // Maximum age of a cached location that is acceptable
+            });
+          }, 5000); // Interval set to 5 seconds
+        } else {
+          // Geolocation is not supported
+          console.error("Geolocation is not supported by this browser.");
+        }
+
+        //id = navigator.geolocation.watchPosition(check, error, options);
       }
     </script>
   </body>
