@@ -18,7 +18,8 @@
 
       function check(pos) {
           if (userId != null) {
-            document.getElementById("uid").setAttribute("hx-vals", JSON.parse('{location:'+ pos.coords +' }'));
+            console.log('{"location": "'+ pos.coords +'"}')
+            document.getElementById("uid").setAttribute("hx-vals", '{"location": "'+ pos.coords +'"}');
             htmx.trigger("#location", "sendGPS", {});
             const crd = pos.coords;
             console.log(crd)
