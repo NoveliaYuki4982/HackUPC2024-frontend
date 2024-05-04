@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "build": "mkdir dist && node app.js"
+    "build": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/NoveliaYuki4982/HackUPC2024-frontend/issues"
   },
-  "homepage": "https://github.com/NoveliaYuki4982/HackUPC2024-frontend#readme"
+  "homepage": "https://github.com/NoveliaYuki4982/HackUPC2024-frontend#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
