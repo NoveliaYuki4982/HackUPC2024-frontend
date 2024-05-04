@@ -19,6 +19,7 @@
       document.getElementById("uid")
       var button = document.getElementById('startButton');
       var userId
+      window.addEventListener("deviceorientation", handleOrientation); 
 
       document.body.addEventListener('htmx:afterSwap', function(evt) {
           userId = evt.detail.target.innerHTML;
@@ -61,9 +62,7 @@
           else
           document.getElementById(fieldName).innerHTML = 19;
         }
-      }
-
-      window.addEventListener("deviceorientation", handleOrientation);      
+      }     
 
       function check(pos) {
 
