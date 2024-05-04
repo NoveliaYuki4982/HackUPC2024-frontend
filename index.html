@@ -36,23 +36,6 @@
 
       const button = document.getElementById('startButton');
 
-      if (button) {
-          // Get the current hx-vals attribute value
-          let hxVals = button.getAttribute('hx-vals');
-
-          // Parse the hx-vals JSON string to a JavaScript object
-          let hxValsObject = JSON.parse(hxVals);
-
-          // Update the rotation value
-          hxValsObject.rotation = orientationData;
-
-          // Convert the JavaScript object back to a JSON string
-          const updatedHxVals = JSON.stringify(hxValsObject);
-
-          // Set the updated hx-vals attribute back to the button
-          button.setAttribute('hx-vals', updatedHxVals);
-      }
-
       document.getElementById("")
 
       updateFieldIfNotNull('Orientation_a', event.alpha);
@@ -78,23 +61,7 @@
     }
   }
 
-  let is_running = false;
-  let demo_button = document.getElementById("startButton");
-  if (
-    DeviceMotionEvent &&
-    typeof DeviceMotionEvent.requestPermission === "function"
-    ) {
-      DeviceMotionEvent.requestPermission();
-    }
   window.addEventListener("deviceorientation", handleOrientation);
-  demo_button.classList.remove('btn-success');
-  demo_button.classList.add('btn-danger');
-  is_running = true;
-
-  demo_button.onclick = function(e) {
-    e.preventDefault();
-
-  };
 
       function check(pos) {
 
@@ -107,10 +74,16 @@
             locationData.location = estructura
 
             document.getElementById("uid").setAttribute("hx-vals", JSON.stringify(locationData))
+
+            const event = new Event("update");
+
+            // Dispatch the event.
+            elem.dispatchEvent(event);
+
             htmx.trigger("#location", "sendGPS", {});
             const crd = pos.coords;
 
-            if (target.latitude === crd.latitude && target.longitude === crd.longitude) {
+            if (false) {
                 console.log("Congratulations, you reached the target");
                 navigator.geolocation.clearWatch(id);
             }
@@ -121,11 +94,6 @@
           console.error(`ERROR(${err.code}): ${err.message}`);
       }
 
-      target = {
-        latitude: 0,
-        longitude: 0,
-      };
-
       options = {
           enableHighAccuracy: false,
           timeout: 10000,
@@ -134,6 +102,18 @@
       function startGPS() {
         id = navigator.geolocation.watchPosition(check, error, options);
       }
+
+      document.addEventListener("update", function(evt){
+        // Update the rotation value
+        hxValsObject.rotation = orientationData;
+  
+        // Convert the JavaScript object back to a JSON string
+        const updatedHxVals = JSON.stringify(hxValsObject);
+  
+        // Set the updated hx-vals attribute back to the button
+        button.setAttribute('hx-vals', updatedHxVals);
+      });
+
     </script>
   </body>
 </html>
