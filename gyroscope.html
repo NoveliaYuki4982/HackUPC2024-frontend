@@ -26,6 +26,13 @@
 
     </div>
     <script>
+    document.getElementById("uid")
+    var userId
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        userId = evt.detail.target.innerHTML;
+        removeEventListener('htmx:afterSwap', this);
+    });
+
     const button = document.getElementById('startButton');
     // Get the current hx-vals attribute value
     let hxVals = button.getAttribute('hx-vals');
@@ -72,6 +79,22 @@
       let counterElement = document.getElementById("num-observed-events")
       let eventCount = parseInt(counterElement.innerHTML)
       counterElement.innerHTML = eventCount + 1;
+  }
+
+  
+  function check(pos) {
+    const estructura = {
+      location_latitude: pos.coords.latitude,
+      location_longitude: pos.coords.longitude
+    }
+      if (userId != null) {
+        hxValsObject.location = estructura;
+                // Convert the JavaScript object back to a JSON string
+        const updatedHxVals = JSON.stringify(hxValsObject);
+  
+        // Set the updated hx-vals attribute back to the button
+        button.setAttribute('hx-vals', updatedHxVals);
+      }
   }
 
   function updateFieldIfNotNull(fieldName, value, precision=1){
@@ -124,6 +147,24 @@
       is_running = true;
     }
   };
+
+        function error(err) {
+          console.error(`ERROR(${err.code}): ${err.message}`);
+      }
+
+      target = {
+        latitude: 0,
+        longitude: 0,
+      };
+
+      options = {
+          enableHighAccuracy: false,
+          timeout: 10000,
+          maximumAge: 0,
+      };
+      function startGPS() {
+        id = navigator.geolocation.watchPosition(check, error, options);
+      }
 
     </script>
   </body>
