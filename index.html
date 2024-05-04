@@ -65,14 +65,16 @@
 
         if (userId != null) {
           locationData = htmx.values(htmx.find("#location"))
-          console.log(locationData)
+          console.log("before: "+locationData)
           var estructura = {
             location_latitude: pos.coords.latitude,
             location_longitude: pos.coords.longitude
           }
           locationData.location = estructura
-          console.log(locationData.location)
+          console.log("pepe: "+locationData.location)
           butt.setAttribute("hx-vals", JSON.stringify(locationData))
+          locationData = htmx.values(htmx.find("#location"))
+          console.log("After: "+locationData)
           htmx.process(butt);
 
           htmx.trigger("#location", "sendGPS", {});
