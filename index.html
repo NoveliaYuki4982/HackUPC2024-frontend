@@ -27,7 +27,6 @@
       });
 
       function handleOrientation(event) {
-        console.log(event)
         const orientationData = {
           alpha: event.alpha,
           beta: event.beta,
@@ -36,6 +35,7 @@
         
         // Get the current hx-vals attribute value
         let hxVals = butt.getAttribute('hx-vals');
+        console.log(hxVals)
         // Parse the hx-vals JSON string to a JavaScript object
         let hxValsObject = JSON.parse(hxVals);
 
@@ -69,6 +69,7 @@
 
         if (userId != null) {
           locationData = JSON.parse(document.getElementById("startButton").getAttribute("hx-vals"))
+          console.log(locationData)
           var estructura = {
             location_latitude: pos.coords.latitude,
             location_longitude: pos.coords.longitude
