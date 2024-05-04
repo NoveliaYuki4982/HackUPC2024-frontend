@@ -104,6 +104,11 @@
       }
 
       document.addEventListener("update", function(evt){
+        // Get the current hx-vals attribute value
+        let hxVals = button.getAttribute('hx-vals');
+        // Parse the hx-vals JSON string to a JavaScript object
+        let hxValsObject = JSON.parse(hxVals);
+
         // Update the rotation value
         hxValsObject.rotation = orientationData;
   
