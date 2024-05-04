@@ -78,7 +78,7 @@
             const event = new Event("update");
 
             // Dispatch the event.
-            elem.dispatchEvent(event);
+            document.dispatchEvent(event);
 
             htmx.trigger("#location", "sendGPS", {});
             const crd = pos.coords;
