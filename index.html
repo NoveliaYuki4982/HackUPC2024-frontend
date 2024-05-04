@@ -109,7 +109,7 @@
       }
 
       var options = {
-          enableHighAccuracy: false,
+          enableHighAccuracy: true,
           timeout: 1000,
           maximumAge: 0,
       };
@@ -128,7 +128,7 @@
               // Error handling
               console.error("Error occurred: " + error.message);
             }, {
-              enableHighAccuracy: true, // Request high accuracy
+              enableHighAccuracy: false, // Request high accuracy
               timeout: 5000, // Maximum time allowed to try obtaining location
               maximumAge: 0 // Maximum age of a cached location that is acceptable
             });
