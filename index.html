@@ -20,6 +20,12 @@
       document.getElementById("uid")
       var button = document.getElementById('startButton');
       var userId
+      var orientationData = {
+        alpha: event.alpha,
+        beta: event.beta,
+        gamma: event.gamma
+      };
+
       document.body.addEventListener('htmx:afterSwap', function(evt) {
           userId = evt.detail.target.innerHTML;
           removeEventListener('htmx:afterSwap', this);
@@ -29,11 +35,6 @@
       // updateFieldIfNotNull('typee', typeof event.gamma); Esto falla
 
       // Create the data object with orientation data
-      const orientationData = {
-        alpha: event.alpha,
-        beta: event.beta,
-        gamma: event.gamma
-      };
 
       document.getElementById("")
 
