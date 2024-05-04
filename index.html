@@ -18,8 +18,8 @@
 
       function check(pos) {
           if (userId != null) {
-            console.log('{"location": "'+ pos.coords +'"}')
-            document.getElementById("uid").setAttribute("hx-vals", '{"location_latitude": '+ pos.coords.latitude +', "location_longitude": ' + pos.coords.longitude + ', "location_altitude": ' + pos.coords.altitude + '}')
+            console.log(JSON.parse('{"location_latitude": '+ pos.coords.latitude +', "location_longitude": ' + pos.coords.longitude + ', "location_altitude": ' + pos.coords.altitude + '}'))
+            document.getElementById("uid").setAttribute("hx-vals", JSON.parse('{"location_latitude": '+ pos.coords.latitude +', "location_longitude": ' + pos.coords.longitude + ', "location_altitude": ' + pos.coords.altitude + '}'))
             htmx.trigger("#location", "sendGPS", {});
             const crd = pos.coords;
             console.log(crd)
