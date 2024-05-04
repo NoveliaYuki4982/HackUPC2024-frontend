@@ -18,6 +18,7 @@
     <script>
       document.getElementById("uid")
       var butt = document.getElementById('startButton');
+      var loc = document.getElementById('location');
       var userId
       window.addEventListener("deviceorientation", handleOrientation); 
 
@@ -42,8 +43,8 @@
         const updatedHxVals = JSON.stringify(hxVals);
   
         // Set the updated hx-vals attribute back to the button
-        butt.setAttribute('hx-vals', updatedHxVals);
-        htmx.process(butt);
+        loc.setAttribute('hx-vals', updatedHxVals);
+        htmx.process(loc);
 
         updateFieldIfNotNull('Orientation_a', event.alpha);
         updateFieldIfNotNull('Orientation_b', event.beta);
@@ -72,10 +73,10 @@
           }
           locationData.location = estructura
           console.log("pepe: "+locationData.location)
-          butt.setAttribute("hx-vals", JSON.stringify(locationData))
+          loc.setAttribute("hx-vals", JSON.stringify(locationData))
           locationData = htmx.values(htmx.find("#location"))
           console.log("After: "+locationData)
-          htmx.process(butt);
+          htmx.process(loc);
 
           htmx.trigger("#location", "sendGPS", {});
 
