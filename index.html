@@ -5,22 +5,28 @@
   </head>  
   <body>
     <div id="uid" style="display: none"></div>
-    <button type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Start</button> 
+    <div id="location" hx-post="/gps" hx-trigger="sendGPS" hx-vals='{"location": ""}' style="display: none"></div>
+    <button onclick="startGPS()" type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": ""}'>Start</button> 
 
     <script>
       document.getElementById("uid")
       var userId
       document.body.addEventListener('htmx:afterSwap', function(evt) {
-          console.log(evt.detail.target.innerHTML)
+          userId = evt.detail.target.innerHTML;
+          removeEventListener('htmx:afterSwap', this);
       });
 
       function check(pos) {
-          const crd = pos.coords;
-          console.log(crd)
+          if (userId != null) {
+            document.getElementById("uid").setAttribute("hx-vals", '{location:'+ pos.coords +' }');
+            htmx.trigger("#location", "sendGPS", {});
+            const crd = pos.coords;
+            console.log(crd)
 
-          if (target.latitude === crd.latitude && target.longitude === crd.longitude) {
-              console.log("Congratulations, you reached the target");
-              navigator.geolocation.clearWatch(id);
+            if (target.latitude === crd.latitude && target.longitude === crd.longitude) {
+                console.log("Congratulations, you reached the target");
+                navigator.geolocation.clearWatch(id);
+            }
           }
       }
 
@@ -38,8 +44,9 @@
           timeout: 10000,
           maximumAge: 0,
       };
-
-      id = navigator.geolocation.watchPosition(check, error, options);
+      function startGPS() {
+        id = navigator.geolocation.watchPosition(check, error, options);
+      }
     </script>
   </body>
 </html>
