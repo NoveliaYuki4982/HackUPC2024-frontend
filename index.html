@@ -19,11 +19,17 @@
       document.getElementById("uid")
       var butt = document.getElementById('startButton');
       var loc = document.getElementById('location');
-      var userId
+      var id
       window.addEventListener("deviceorientation", handleOrientation); 
 
+      var data = {
+          'location': 'Value1',
+          'rotation': 'Value2',
+          'clientId': null
+      }
+
       document.body.addEventListener('htmx:afterSwap', function(evt) {
-          userId = evt.detail.target.innerHTML;
+          data.clientId = evt.detail.target.innerHTML;
           removeEventListener('htmx:afterSwap', this);
       });
 
@@ -33,18 +39,9 @@
           beta: event.beta,
           gamma: event.gamma
         };
-        
-        // Get the current hx-vals attribute value
-        var hxVals = htmx.values(htmx.find("#location"));
+
         // Update the rotation value
-        hxVals.rotation = orientationData;
-  
-        // Convert the JavaScript object back to a JSON string
-        const updatedHxVals = JSON.stringify(hxVals);
-  
-        // Set the updated hx-vals attribute back to the button
-        loc.setAttribute('hx-vals', updatedHxVals);
-        htmx.process(loc);
+        data.rotation = orientationData
 
         updateFieldIfNotNull('Orientation_a', event.alpha);
         updateFieldIfNotNull('Orientation_b', event.beta);
@@ -64,28 +61,45 @@
 
       function check(pos) {
 
-        if (userId != null) {
-          locationData = htmx.values(htmx.find("#location"))
-          console.log("before: "+locationData)
+        if (data.clientId != null) {
           var estructura = {
             location_latitude: pos.coords.latitude,
             location_longitude: pos.coords.longitude
           }
-          locationData.location = estructura
-          console.log("pepe: "+locationData.location)
-          loc.setAttribute("hx-vals", JSON.stringify(locationData))
-          locationData = htmx.values(htmx.find("#location"))
-          console.log("After: "+locationData)
-          htmx.process(loc);
+          data.location = estructura
 
-          htmx.trigger("#location", "sendGPS", {});
+          let headers = new Headers(data);
+          // Create a fetch request with custom headers
+          fetch('/gps', { method: 'POST', headers: headers })
+              .then(response => {
+                  // Check and print the boolean header
+                  const arrived = response.headers.get('X-Arrived');
+                  if (arrived) {
+                      console.log("Congratulations, you reached the target");
+                      navigator.geolocation.clearWatch(id);
+                  }
+                  // Check if the response is OK and handle the audio content
+                  if (response.ok) {
+                      return response.blob();  // Convert the audio content to a blob
+                  } else {
+                      throw new Error('Failed to fetch the audio');
+                  }
+              })
+              .then(blob => {
+                  // Create a URL for the blob
+                  const audioUrl = URL.createObjectURL(blob);
 
-          if (false) {
-              console.log("Congratulations, you reached the target");
-              navigator.geolocation.clearWatch(id);
+                  // Create an audio element and play the audio
+                  const audio = new Audio(audioUrl);
+                  audio.play()
+                      .then(() => console.log('Audio is playing...'))
+                      .catch(e => console.error('Error playing audio:', e));
+              })
+              .catch(error => {
+                  console.error('Error in fetching or playing audio:', error);
+              });
+            }
           }
-        }
-      }
 
       function error(err) {
           console.error(`ERROR(${err.code}): ${err.message}`);
