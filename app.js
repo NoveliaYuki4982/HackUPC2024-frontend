@@ -8,3 +8,8 @@ app.get("/", function (req, res) {
 app.listen(8000, function () {
     console.log("Server is running on localhost:8000");
 });
+
+app.get("/start", function (req, res) {
+    res.set('Content-Type', 'text/html');
+    res.send(JSON.stringify("Pepe"));
+});
