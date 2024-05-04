@@ -6,15 +6,133 @@
   <body>
     <div id="uid" style="display: none"></div>
     <button type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Start</button> 
-
+    
+    <div class="p-3 mb-2 bg-secondary" id="demo-div">
+      <audio id="sound" src="metalpipe.mp3"></audio>
+      
+      <a id="start_demo" class="btn btn-lg btn-success py-1" href="#" role="button">Start the demo</a>
+      <p style="margin-top:1rem;">Num. of datapoints: <span class="badge badge-warning" id="num-observed-events">0</span></p>
+      
+      
+      <h4 style="margin-top:0.75rem;">Orientations</h4>
+      <ul>
+        <li>X-axis (&beta;): <span id="Orientation_b">0</span><span>&deg;</span></li>
+        <li>Y-axis (&gamma;): <span id="Orientation_g">0</span><span>&deg;</span></li>
+        <li>Z-axis (&alpha;): <span id="Orientation_a">0</span><span>&deg;</span></li>
+      </ul>
+      
+      <h4 style="margin-top:0.75rem;">Tipo</h4>
+      <ul>
+        <li>Que tipo es? <span id="typee">Ni idea</span></li>
+      </ul>
+      
+      
+    </div>
     <script>
       document.getElementById("uid")
       var userId
       document.body.addEventListener('htmx:afterSwap', function(evt) {
-          console.log(evt.detail.target.innerHTML)
+          userId = evt.detail.target.innerHTML;
       });
 
-      // Yuma tu codigo ira aqui:
+      const endpointUrl = 'https://your-endpoint.com/api/orientation';
+
+    function handleOrientation(event) {
+      // updateFieldIfNotNull('typee', typeof event.gamma); Esto falla
+
+    // Create the data object with orientation data
+    const orientationData = {
+      alpha: event.alpha,
+      beta: event.beta,
+      gamma: event.gamma
+    };
+  
+    // Make a POST request to the endpoint with the orientation data
+    fetch(endpointUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(orientationData)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      // Handle the response if needed (e.g., log it or update the UI)
+      return response.json();
+    })
+    .then(data => {
+      console.log('Data sent successfully:', data);
+    })
+    .catch(error => {
+      console.error('Error sending data:', error);
+    });
+
+    updateFieldIfNotNull('Orientation_a', event.alpha);
+    updateFieldIfNotNull('Orientation_b', event.beta);
+    updateFieldIfNotNull('Orientation_g', event.gamma);
+    incrementEventCount();
+  }
+
+  function incrementEventCount(){
+    let counterElement = document.getElementById("num-observed-events")
+    let eventCount = parseInt(counterElement.innerHTML)
+    counterElement.innerHTML = eventCount + 1;
+  }
+
+  function updateFieldIfNotNull(fieldName, value, precision=1){
+    if (value != null)
+      document.getElementById(fieldName).innerHTML = value.toFixed(precision);
+    if (fieldName == 'typee'){
+      if (value != null)
+      document.getElementById(fieldName).innerHTML = 20;
+      else 
+      document.getElementById(fieldName).innerHTML = 19;
+    }
+  }
+
+  function playSound() {
+      // Get the audio element
+      var audio = document.getElementById('sound');
+      
+      // Play the audio
+      audio.play();
+  }
+
+  let is_running = false;
+  let demo_button = document.getElementById("start_demo");
+  window.addEventListener("deviceorientation", handleOrientation);
+  document.getElementById("start_demo").innerHTML = "Stop demo";
+  demo_button.classList.remove('btn-success');
+  demo_button.classList.add('btn-danger');
+  is_running = true;
+
+  demo_button.onclick = function(e) {
+    e.preventDefault();
+    
+    // Request permission for iOS 13+ devices
+    if (
+      DeviceMotionEvent &&
+      typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+      DeviceMotionEvent.requestPermission();
+    }
+    playSound();
+    if (is_running){
+      window.removeEventListener("deviceorientation", handleOrientation);
+      demo_button.innerHTML = "Start demo";
+      demo_button.classList.add('btn-success');
+      demo_button.classList.remove('btn-danger');
+      is_running = false;
+    }else{
+      window.addEventListener("deviceorientation", handleOrientation);
+      document.getElementById("start_demo").innerHTML = "Stop demo";
+      demo_button.classList.remove('btn-success');
+      demo_button.classList.add('btn-danger');
+      is_running = true;
+    }
+  };
       
     </script>
   </body>
