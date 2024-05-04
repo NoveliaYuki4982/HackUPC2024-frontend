@@ -16,10 +16,17 @@
           removeEventListener('htmx:afterSwap', this);
       });
 
+      const estructura = {
+        location_latitude: pos.coords.latitude,
+        location_longitude: pos.coords.longitude
+      }
+
       function check(pos) {
           if (userId != null) {
-            console.log(JSON.parse('{"location_latitude": '+ pos.coords.latitude +', "location_longitude": ' + pos.coords.longitude + '}'))
-            document.getElementById("uid").setAttribute("hx-vals", JSON.parse('{"location_latitude": '+ pos.coords.latitude +', "location_longitude": ' + pos.coords.longitude + '}'))
+            locationData = JSON.parse(document.getElementById("startButton").getAttribute("hx-vals"))
+            locationData.location = estructura
+
+            document.getElementById("uid").setAttribute("hx-vals", JSON.stringify(locationData))
             htmx.trigger("#location", "sendGPS", {});
             const crd = pos.coords;
             console.log(crd)
