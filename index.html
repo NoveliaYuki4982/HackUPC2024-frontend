@@ -27,15 +27,11 @@
 
       function handleOrientation(event) {
         console.log(event)
-        var data = {
+        const orientationData = {
           alpha: event.alpha,
           beta: event.beta,
           gamma: event.gamma
-      }
-
-        updateFieldIfNotNull('Orientation_a', event.alpha);
-        updateFieldIfNotNull('Orientation_b', event.beta);
-        updateFieldIfNotNull('Orientation_g', event.gamma);
+        };
         
         // Get the current hx-vals attribute value
         let hxVals = button.getAttribute('hx-vals');
@@ -43,13 +39,17 @@
         let hxValsObject = JSON.parse(hxVals);
 
         // Update the rotation value
-        hxValsObject.rotation = data;
+        hxValsObject.rotation = orientationData;
   
         // Convert the JavaScript object back to a JSON string
         const updatedHxVals = JSON.stringify(hxValsObject);
   
         // Set the updated hx-vals attribute back to the button
         button.setAttribute('hx-vals', updatedHxVals);
+
+        updateFieldIfNotNull('Orientation_a', event.alpha);
+        updateFieldIfNotNull('Orientation_b', event.beta);
+        updateFieldIfNotNull('Orientation_g', event.gamma);
       }
 
       function updateFieldIfNotNull(fieldName, value, precision=1) {
