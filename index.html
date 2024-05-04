@@ -35,6 +35,7 @@
         
         // Get the current hx-vals attribute value
         var hxVals = htmx.values(htmx.find("#location"));
+        console.log(hxVals)
         // Parse the hx-vals JSON string to a JavaScript object
         let hxValsObject = JSON.parse(hxVals);
         console.log(hxValsObject);
@@ -67,7 +68,9 @@
       function check(pos) {
 
         if (userId != null) {
-          locationData = JSON.parse(htmx.values(htmx.find("#location")))
+          loc = htmx.values(htmx.find("#location"))
+          console.log(loc)
+          locationData = JSON.parse(loc)
           console.log(locationData)
           var estructura = {
             location_latitude: pos.coords.latitude,
