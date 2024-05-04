@@ -20,18 +20,18 @@
       var button = document.getElementById('startButton');
       var userId
 
-      var data = {
-          alpha: event.alpha,
-          beta: event.beta,
-          gamma: event.gamma
-      }
-
       document.body.addEventListener('htmx:afterSwap', function(evt) {
           userId = evt.detail.target.innerHTML;
           removeEventListener('htmx:afterSwap', this);
       });
 
       function handleOrientation(event) {
+
+        var data = {
+          alpha: event.alpha,
+          beta: event.beta,
+          gamma: event.gamma
+      }
 
         updateFieldIfNotNull('Orientation_a', event.alpha);
         updateFieldIfNotNull('Orientation_b', event.beta);
