@@ -70,8 +70,9 @@
             location_latitude: pos.coords.latitude,
             location_longitude: pos.coords.longitude
           }
-          locationData.location = estructura
-
+          locationData[location] = estructura
+          console.log(locationData.location)
+          console.log(locationData[location])
           butt.setAttribute("hx-vals", JSON.stringify(locationData))
           htmx.process(butt);
 
