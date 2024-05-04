@@ -5,14 +5,14 @@
   </head>
   <body>
     <div id="uid" style="display: none"></div>
-    <button onclick="startGPS()" type="button" id="startButtonReal" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Start</button><br/><br/>
-    <button type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Start</button>
+    <button onclick="startGPS()" type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": ""}'>Start</button> <br/><br/>
+    <button type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Send </button>
 
     <div class="p-3 mb-2 bg-secondary" id="demo-div">
       <p style="margin-top:1rem;">Num. of datapoints: <span class="badge badge-warning" id="num-observed-events">0</span></p>
 
 
-      <h4 style="margin-top:0.75rem;">Orientation!!</h4>
+      <h4 style="margin-top:0.75rem;">Orientation!!!</h4>
       <ul>
         <li>X-axis (&beta;): <span id="Orientation_b">0</span><span>&deg;</span></li>
         <li>Y-axis (&gamma;): <span id="Orientation_g">0</span><span>&deg;</span></li>
@@ -160,7 +160,7 @@
 
       options = {
           enableHighAccuracy: false,
-          timeout: 10000,
+          timeout: 500,
           maximumAge: 0,
       };
       function startGPS() {
