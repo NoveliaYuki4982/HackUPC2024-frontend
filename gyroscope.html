@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
+  </head>  
+  <body>
+    <div id="uid" style="display: none"></div>
+    <button type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Start</button> 
+
+    <script>
+      document.getElementById("uid")
+      var userId
+      document.body.addEventListener('htmx:afterSwap', function(evt) {
+          console.log(evt.detail.target.innerHTML)
+      });
+
+      // Yuma tu codigo ira aqui:
+      
+    </script>
+  </body>
+</html>
