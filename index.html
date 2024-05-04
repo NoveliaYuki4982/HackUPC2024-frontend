@@ -8,7 +8,6 @@
     <div id="location" hx-post="/gps" hx-trigger="sendGPS" hx-vals='{"location": ""}' style="display: none"></div>
     <button onclick="startGPS()" type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": ""}'>Start</button> 
     <div class="p-3 mb-2 bg-secondary" id="demo-div">
-      <p style="margin-top:1rem;">Num. of datapoints: <span class="badge badge-warning" id="num-observed-events">0</span></p>
       <h4 style="margin-top:0.75rem;">Orientations</h4>
       <ul>
         <li>X-axis (&beta;): <span id="Orientation_b">0</span><span>&deg;</span></li>
@@ -42,14 +41,21 @@
       updateFieldIfNotNull('Orientation_a', event.alpha);
       updateFieldIfNotNull('Orientation_b', event.beta);
       updateFieldIfNotNull('Orientation_g', event.gamma);
-      incrementEventCount();
-    }
+      
+      // Get the current hx-vals attribute value
+      let hxVals = button.getAttribute('hx-vals');
+        // Parse the hx-vals JSON string to a JavaScript object
+        let hxValsObject = JSON.parse(hxVals);
 
-    function incrementEventCount(){
-    let counterElement = document.getElementById("num-observed-events")
-    let eventCount = parseInt(counterElement.innerHTML)
-    counterElement.innerHTML = eventCount + 1;
-  }
+        // Update the rotation value
+        hxValsObject.rotation = orientationData;
+  
+        // Convert the JavaScript object back to a JSON string
+        const updatedHxVals = JSON.stringify(hxValsObject);
+  
+        // Set the updated hx-vals attribute back to the button
+        button.setAttribute('hx-vals', updatedHxVals);
+    }
 
   function updateFieldIfNotNull(fieldName, value, precision=1){
     if (value != null)
@@ -80,7 +86,6 @@
             document.dispatchEvent(event);
 
             htmx.trigger("#location", "sendGPS", {});
-            const crd = pos.coords;
 
             if (false) {
                 console.log("Congratulations, you reached the target");
