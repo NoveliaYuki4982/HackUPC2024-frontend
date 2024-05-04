@@ -71,39 +71,39 @@
               console.log("Accuracy: " + position.coords.accuracy + " meters");
 
               var estructura = {
-              location_latitude: pos.coords.latitude,
-              location_longitude: pos.coords.longitude
-            }
+                location_latitude: position.coords.latitude,
+                location_longitude: position.coords.longitude
+              }
 
-            data.location = estructura
-            console.log(data)
+              data.location = estructura
+              console.log(data)
 
-            let headers = new Headers(data);
-            // Create a fetch request with custom headers
-            fetch('/gps', { method: 'POST', headers: headers })
-                .then(response => {
-                    // Check and print the boolean header
-                    const arrived = response.headers.get('X-Arrived');
-                    if (arrived) {
-                        console.log("Congratulations, you reached the target");
-                        navigator.geolocation.clearWatch(id);
-                    }
-                    // Check if the response is OK and handle the audio content
-                    if (response.ok) {
-                        return response.blob();  // Convert the audio content to a blob
-                    } else {
-                        throw new Error('Failed to fetch the audio');
-                    }
-                })
-                .then(blob => {
-                    // Create a URL for the blob
-                    const audioUrl = URL.createObjectURL(blob);
+              let headers = new Headers(data);
+              // Create a fetch request with custom headers
+              fetch('/gps', { method: 'POST', headers: headers })
+                  .then(response => {
+                      // Check and print the boolean header
+                      const arrived = response.headers.get('X-Arrived');
+                      if (arrived) {
+                          console.log("Congratulations, you reached the target");
+                          navigator.geolocation.clearWatch(id);
+                      }
+                      // Check if the response is OK and handle the audio content
+                      if (response.ok) {
+                          return response.blob();  // Convert the audio content to a blob
+                      } else {
+                          throw new Error('Failed to fetch the audio');
+                      }
+                  })
+              .then(blob => {
+                // Create a URL for the blob
+                const audioUrl = URL.createObjectURL(blob);
 
-                    // Create an audio element and play the audio
-                    const audio = new Audio(audioUrl);
-                    audio.play()
-                        .then(() => console.log('Audio is playing...'))
-                        .catch(e => console.error('Error playing audio:', e));
+                // Create an audio element and play the audio
+                const audio = new Audio(audioUrl);
+                audio.play()
+                    .then(() => console.log('Audio is playing...'))
+                    .catch(e => console.error('Error playing audio:', e));
                 })
                 .catch(error => {
                     console.error('Error in fetching or playing audio:', error);
