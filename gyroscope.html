@@ -5,13 +5,14 @@
   </head>
   <body>
     <div id="uid" style="display: none"></div>
-    <button type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Start</button>
+    <button onclick="startGPS()" type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": ""}'>Start</button> <br/><br/>
+    <button type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Send </button>
 
     <div class="p-3 mb-2 bg-secondary" id="demo-div">
       <p style="margin-top:1rem;">Num. of datapoints: <span class="badge badge-warning" id="num-observed-events">0</span></p>
 
 
-      <h4 style="margin-top:0.75rem;">Orientations</h4>
+      <h4 style="margin-top:0.75rem;">Orientation!!!</h4>
       <ul>
         <li>X-axis (&beta;): <span id="Orientation_b">0</span><span>&deg;</span></li>
         <li>Y-axis (&gamma;): <span id="Orientation_g">0</span><span>&deg;</span></li>
@@ -26,55 +27,75 @@
 
     </div>
     <script>
-      document.getElementById("uid")
-      var userId
-      document.body.addEventListener('htmx:afterSwap', function(evt) {
-          userId = evt.detail.target.innerHTML;
-      });
-
-      const endpointUrl = 'https://your-endpoint.com/api/orientation';
-
-    function handleOrientation(event) {
-      // updateFieldIfNotNull('typee', typeof event.gamma); Esto falla
-
-    // Create the data object with orientation data
-    const orientationData = {
-      alpha: event.alpha,
-      beta: event.beta,
-      gamma: event.gamma
-    };
+    document.getElementById("uid")
+    var userId
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        userId = evt.detail.target.innerHTML;
+        removeEventListener('htmx:afterSwap', this);
+    });
 
     const button = document.getElementById('startButton');
+    // Get the current hx-vals attribute value
+    let hxVals = button.getAttribute('hx-vals');
+    // Parse the hx-vals JSON string to a JavaScript object
+    let hxValsObject = JSON.parse(hxVals);
+    document.getElementById("uid")
+    var userId
+    document.body.addEventListener('htmx:afterSwap', function(evt) {
+        userId = evt.detail.target.innerHTML;
+    });
 
-    if (button) {
-        // Get the current hx-vals attribute value
-        let hxVals = button.getAttribute('hx-vals');
-
-        // Parse the hx-vals JSON string to a JavaScript object
-        let hxValsObject = JSON.parse(hxVals);
-
+    const endpointUrl = 'https://your-endpoint.com/api/orientation';
+    
+    function handleOrientation(event) {
+      // updateFieldIfNotNull('typee', typeof event.gamma); Esto falla
+  
+      // Create the data object with orientation data
+      const orientationData = {
+        alpha: event.alpha,
+        beta: event.beta,
+        gamma: event.gamma
+      };
+        
+      if (button) {
         // Update the rotation value
         hxValsObject.rotation = orientationData;
-
+  
         // Convert the JavaScript object back to a JSON string
         const updatedHxVals = JSON.stringify(hxValsObject);
-
+  
         // Set the updated hx-vals attribute back to the button
         button.setAttribute('hx-vals', updatedHxVals);
+      }
+  
+      document.getElementById("")
+  
+      updateFieldIfNotNull('Orientation_a', event.alpha);
+      updateFieldIfNotNull('Orientation_b', event.beta);
+      updateFieldIfNotNull('Orientation_g', event.gamma);
+      incrementEventCount();
     }
-
-    document.getElementById("")
-
-    updateFieldIfNotNull('Orientation_a', event.alpha);
-    updateFieldIfNotNull('Orientation_b', event.beta);
-    updateFieldIfNotNull('Orientation_g', event.gamma);
-    incrementEventCount();
+  
+    function incrementEventCount(){
+      let counterElement = document.getElementById("num-observed-events")
+      let eventCount = parseInt(counterElement.innerHTML)
+      counterElement.innerHTML = eventCount + 1;
   }
 
-  function incrementEventCount(){
-    let counterElement = document.getElementById("num-observed-events")
-    let eventCount = parseInt(counterElement.innerHTML)
-    counterElement.innerHTML = eventCount + 1;
+  
+  function check(pos) {
+    const estructura = {
+      location_latitude: pos.coords.latitude,
+      location_longitude: pos.coords.longitude
+    }
+      if (userId != null) {
+        hxValsObject.location = estructura;
+                // Convert the JavaScript object back to a JSON string
+        const updatedHxVals = JSON.stringify(hxValsObject);
+  
+        // Set the updated hx-vals attribute back to the button
+        button.setAttribute('hx-vals', updatedHxVals);
+      }
   }
 
   function updateFieldIfNotNull(fieldName, value, precision=1){
@@ -127,6 +148,24 @@
       is_running = true;
     }
   };
+
+        function error(err) {
+          console.error(`ERROR(${err.code}): ${err.message}`);
+      }
+
+      target = {
+        latitude: 0,
+        longitude: 0,
+      };
+
+      options = {
+          enableHighAccuracy: false,
+          timeout: 500,
+          maximumAge: 0,
+      };
+      function startGPS() {
+        id = navigator.geolocation.watchPosition(check, error, options);
+      }
 
     </script>
   </body>
