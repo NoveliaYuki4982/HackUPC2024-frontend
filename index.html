@@ -19,6 +19,7 @@
     <script>
       document.getElementById("uid")
       var button = document.getElementById('startButton');
+      var event = new Event("update");
       var userId
       var orientationData = {
         alpha: event.alpha,
@@ -75,8 +76,6 @@
 
             document.getElementById("uid").setAttribute("hx-vals", JSON.stringify(locationData))
 
-            const event = new Event("update");
-
             // Dispatch the event.
             document.dispatchEvent(event);
 
@@ -94,11 +93,12 @@
           console.error(`ERROR(${err.code}): ${err.message}`);
       }
 
-      options = {
+      var options = {
           enableHighAccuracy: false,
           timeout: 10000,
           maximumAge: 0,
       };
+
       function startGPS() {
         id = navigator.geolocation.watchPosition(check, error, options);
       }
