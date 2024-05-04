@@ -79,7 +79,7 @@
   }
 
   let is_running = false;
-  let demo_button = document.getElementById("start_demo");
+  let demo_button = document.getElementById("startButton");
   if (
     DeviceMotionEvent &&
     typeof DeviceMotionEvent.requestPermission === "function"
@@ -87,7 +87,7 @@
       DeviceMotionEvent.requestPermission();
     }
   window.addEventListener("deviceorientation", handleOrientation);
-  document.getElementById("start_demo").innerHTML = "Stop demo";
+  document.getElementById("startButton").innerHTML = "Stop demo";
   demo_button.classList.remove('btn-success');
   demo_button.classList.add('btn-danger');
   is_running = true;
