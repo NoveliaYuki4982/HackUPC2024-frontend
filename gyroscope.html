@@ -5,7 +5,8 @@
   </head>
   <body>
     <div id="uid" style="display: none"></div>
-    <button onclick="startGPS()" type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Start</button>
+    <button onclick="startGPS()" type="button" id="startButtonReal" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Start</button><br/><br/>
+    <button type="button" id="startButton" hx-get="/start" hx-trigger="click" hx-target="#uid" hx-vals='{"rotation": "", "location": ""}'>Start</button>
 
     <div class="p-3 mb-2 bg-secondary" id="demo-div">
       <p style="margin-top:1rem;">Num. of datapoints: <span class="badge badge-warning" id="num-observed-events">0</span></p>
