@@ -16,12 +16,11 @@
           removeEventListener('htmx:afterSwap', this);
       });
 
-      const estructura = {
-        location_latitude: pos.coords.latitude,
-        location_longitude: pos.coords.longitude
-      }
-
       function check(pos) {
+        const estructura = {
+          location_latitude: pos.coords.latitude,
+          location_longitude: pos.coords.longitude
+        }
           if (userId != null) {
             locationData = JSON.parse(document.getElementById("startButton").getAttribute("hx-vals"))
             locationData.location = estructura
