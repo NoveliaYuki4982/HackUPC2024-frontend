@@ -18,7 +18,7 @@
         <li>Z-axis (&alpha;): <span id="Orientation_a">0</span><span>&deg;</span></li>
       </ul>
 
-      <h4 style="margin-top:0.75rem;">Tipo</h4>
+      <h4 style="margin-top:0.75rem;">Tip0o</h4>
       <ul>
         <li>Que tipo es? <span id="typee">Ni idea</span></li>
       </ul>
@@ -98,6 +98,31 @@
   demo_button.classList.remove('btn-success');
   demo_button.classList.add('btn-danger');
   is_running = true;
+
+  demo_button.onclick = function(e) {
+    e.preventDefault();
+
+    // Request permission for iOS 13+ devices
+    if (
+      DeviceMotionEvent &&
+      typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+      DeviceMotionEvent.requestPermission();
+    }
+
+    if (is_running){
+      window.removeEventListener("deviceorientation", handleOrientation);
+      demo_button.innerHTML = "Start demo";
+      demo_button.classList.add('btn-success');
+      demo_button.classList.remove('btn-danger');
+      is_running = false;
+    }else{
+      window.addEventListener("deviceorientation", handleOrientation);
+      document.getElementById("start_demo").innerHTML = "Stop demo";
+      demo_button.classList.remove('btn-success');
+      demo_button.classList.add('btn-danger');
+      is_running = true;
+    }
   };
 
     </script>
