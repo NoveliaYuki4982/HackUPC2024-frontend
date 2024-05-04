@@ -17,7 +17,7 @@
 
     <script>
       document.getElementById("uid")
-      var button = document.getElementById('startButton');
+      const button = document.getElementById('startButton');
       var userId
       window.addEventListener("deviceorientation", handleOrientation); 
 
@@ -47,6 +47,7 @@
   
         // Set the updated hx-vals attribute back to the button
         button.setAttribute('hx-vals', updatedHxVals);
+        htmx.process(button);
 
         updateFieldIfNotNull('Orientation_a', event.alpha);
         updateFieldIfNotNull('Orientation_b', event.beta);
@@ -74,7 +75,8 @@
           }
           locationData.location = estructura
 
-          document.getElementById("uid").setAttribute("hx-vals", JSON.stringify(locationData))
+          button.setAttribute("hx-vals", JSON.stringify(locationData))
+          htmx.process(button);
 
           htmx.trigger("#location", "sendGPS", {});
 
