@@ -64,20 +64,12 @@
         // Geolocation is supported
           setInterval(function() {
             navigator.geolocation.getCurrentPosition(function(position) {
-              // Success handler
-              console.log("Latitude: " + position.coords.latitude);
-              console.log("Longitude: " + position.coords.longitude);
-              console.log("Accuracy: " + position.coords.accuracy + " meters");
 
               var estructura = {
                 location_latitude: position.coords.latitude,
                 location_longitude: position.coords.longitude
               }
-              console.log("1" + data.rotation)
-              console.log("2" + data.location)
               data.location = estructura
-              console.log("new1" + data.rotation)
-              console.log("new2" + data.location)
 
               let headers = new Headers(data);
               // Create a fetch request with custom headers
