@@ -43,7 +43,7 @@
 
         // Update the rotation value
         data.rotation = orientationData
-        console.log(data)
+        console.log("gyro data" + data)
         updateFieldIfNotNull('Orientation_a', event.alpha);
         updateFieldIfNotNull('Orientation_b', event.beta);
         updateFieldIfNotNull('Orientation_g', event.gamma);
@@ -78,7 +78,8 @@
               console.log("1" + data.rotation)
               console.log("2" + data.location)
               data.location = estructura
-              console.log(data)
+              console.log("new1" + data.rotation)
+              console.log("new2" + data.location)
 
               let headers = new Headers(data);
               // Create a fetch request with custom headers
