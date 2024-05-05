@@ -34,7 +34,6 @@
       });
 
       function handleOrientation(event) {
-        console.log("gyro")
         const orientationData = {
           alpha: event.alpha,
           beta: event.beta,
@@ -43,7 +42,6 @@
 
         // Update the rotation value
         data.rotation = orientationData
-        console.log("gyro data" + data)
         updateFieldIfNotNull('Orientation_a', event.alpha);
         updateFieldIfNotNull('Orientation_b', event.beta);
         updateFieldIfNotNull('Orientation_g', event.gamma);
